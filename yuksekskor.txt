@@ -1,0 +1,10 @@
+Joe	50
+Joe	50
+Joe	50
+User	80
+User	100
+User	90
+User	40
+Loser User	0
+User	100
+User	20
