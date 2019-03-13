@@ -8,3 +8,6 @@ User	40
 Loser User	0
 User	100
 User	20
+Loser User	0
+User	100
+User	50

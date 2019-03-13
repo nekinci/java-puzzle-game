@@ -26,7 +26,7 @@ public class Game extends javax.swing.JFrame {
         BufferedImage img = null;
         ImageFragmentation imgFrag = null;
         try {
-            File f = new File("src/alanya4.jpg");
+            File f = new File("alanya4.jpg");
             img = ImageIO.read(f);
             imgFrag = new ImageFragmentation(img);
             Mediator mediator = new Mediator();

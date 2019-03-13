@@ -1,10 +1,25 @@
 Joe	50
 Joe	50
 Joe	50
+User	100
+Loser User	0
+User	80
+Loser User	0
+User	80
+User	100
+User	80
+Loser User	0
+User	100
+User	100
+User	90
+User	100
 User	80
 User	100
 User	90
-User	40
-Loser User	0
 User	100
-User	20
+User	90
+User	80
+User	100
+User	90
+User	90
+User	90

@@ -17,7 +17,7 @@ public class Skor {
     
     // Skoru kaydedip çekmek için yazdığımız class 
     // bir nesneye işimizi halletiricez :)
-    private String path = "src/";
+    private String path = "";
     private String name = "yuksekskor.txt";
     
     private String username;

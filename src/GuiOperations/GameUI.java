@@ -60,6 +60,32 @@ public class GameUI extends JPanel implements IMediator{
         init();
     }
     
+    
+    public boolean compareImagesWithBitmap(BufferedImage first,BufferedImage last){
+        
+        if((first.getHeight() != last.getHeight()) || (last.getWidth() != first.getWidth()) ){
+            System.out.println("En başta boyutlar uymuyor zaten sen neyi karşılaştırmak istiyorsun, yiğidim ?");
+            return false;
+        }
+        
+        // Pixel pixel resimleri birbirleriyle karşılaştırıyoruz
+        int height = first.getHeight();
+        int width = first.getWidth();
+        boolean check = true;
+        
+        for (int i = 0; i < width; i++){
+            for (int j = 0; j < height; j++){
+                if(first.getRGB(i, j) != last.getRGB(i, j))
+                    check = false;
+            }
+        }
+        
+        return check;
+    }
+    
+    
+    
+    
     private void init(){
         // Bu fonksiyon resimleri butonlara düzgün bir şekilde ekler. ve bazı initalize edilecek değişkenleri 
         // initalize ederek kullanıma hazırlar.
@@ -91,7 +117,7 @@ public class GameUI extends JPanel implements IMediator{
     }
     public int mixImages(){
         
-        
+        resetValues();
         // Bu metod, resimlerin yerlerini karıştırır.
         //signedw[] ve signedh[][] dizilerini kullanma nedenimiz resim atanan yerleri işaretleyerek tekrar oralara resim atmamak için.
         // random bir şekilde w ve h değişkenlerine atıyoruz ve yerleştiriyoruz.
@@ -103,7 +129,9 @@ public class GameUI extends JPanel implements IMediator{
                 i--;
                 continue;
             }
+            
             signedw[w] = true;
+            
             for(int j = 0; j < 4; j++){
                 int h = (int) (Math.random() * 10) % 4;
                 
@@ -161,13 +189,13 @@ public class GameUI extends JPanel implements IMediator{
                             //Eğer doğru yerlerdeyse enabled'ini false yapıyoruz ki tekrar yerini değiştiremesinler artık.
                             //Ve sonuç olarak etraflarını sarıya boyuyoruz ki bizim işimiz tamam mesajı verdiriyoruz.
                             
-                            if (btn.imageCopy() == exBtn.imageCopy()){
+                            if (compareImagesWithBitmap(btn.imageCopy(), exBtn.imageCopy())){
                                 btn.setEnabled(false);
                                 btn.setBorder(new LineBorder(Color.YELLOW,5));
                                 System.out.println("Ok Ana");
                             }
                             
-                            if(selectedButton.imageCopy() == buttons[stack.pop()][stack.pop()].imageCopy()){
+                            if(compareImagesWithBitmap(selectedButton.imageCopy(), buttons[stack.pop()][stack.pop()].imageCopy())){
                                 selectedButton.setEnabled(false);
                                 selectedButton.setBorder(new LineBorder(Color.YELLOW,3));
                                 System.out.println("Ok yedek");
@@ -179,8 +207,8 @@ public class GameUI extends JPanel implements IMediator{
                         // 15 hakkımız her tıklamada düşüyor.
                         //Her tıklamada oyun bittimi kontrolü yapyıroz. gameControl() ile.
                         if(hak > 0 && count == -1){
+                            
                             hak--;
-                            mediator.hakGuncelle(hak);
                             if(gameControl() == 16){
                                 JOptionPane.showMessageDialog(null, "Tebrikler! Kazandınız, skorunuz: "+score);
                                 setVisible(false);
@@ -188,11 +216,12 @@ public class GameUI extends JPanel implements IMediator{
                                 Skor skor = new Skor();
                                 skor.skorEkle("User", score);
                             }
+                            mediator.hakGuncelle(hak);
                         }
                         
                         //Hakkımız bittiyse artık skor üzerinden işlem yapmaya çalışıyoruz.
                         // 15 hakta kazandın kazandın yoksa 100 puanı unut diyoruz aslında.
-                        if(hak == 0){
+                        else if(hak == 0){
                             if(score > 0 && count == -1){ // Hakkımız 0 oldu artık tamam herşey güzel, fakat skorumuzda 0dan büyük olmalıki oyunu oynayabilelim demi :)
                                 score = score - 10; // Her tıklamada skoru 10 puan düşürüyoruz.
                                 mediator.skorGuncelle(score);
@@ -225,9 +254,9 @@ public class GameUI extends JPanel implements IMediator{
             }
         }
         resetValues();
-        addImages();
-        checkImages();
-        return counter;
+
+        return checkImages();
+
     }
     
     public void resetValues(){
@@ -239,18 +268,22 @@ public class GameUI extends JPanel implements IMediator{
         }
     }
     
-    public void checkImages(){
+    public int checkImages(){
         int a = 0;
+        int counter = 0;
         for(int i = 0; i < 4; i++){
             for( int j = 0; j < 4; j++){
-                if(btns[i][j].imageCopy() == buttons[i][j].imageCopy()){
+                if(compareImagesWithBitmap(btns[i][j].imageCopy(), buttons[i][j].imageCopy())){
                     btns[i][j].setBorder(new LineBorder(Color.YELLOW,2));
                     btns[i][j].setEnabled(false);
                     counter++;
+                    System.out.println("\nBtns[i][j] : "+btns[i][j].imageCopy() +" \nButtons[i][j]: "+buttons[i][j].imageCopy());
+                    System.out.println("\ni: "+i+" j: "+j);
                     a++;
                 }
             }
         }
+        return a;
     }
 
     //Bunlar yukarıda anlatılan işlerin fonksiyonlaştırılmış hali.
@@ -258,10 +291,21 @@ public class GameUI extends JPanel implements IMediator{
         int c = 0;
         for (int i = 0; i < 4; i++){
             for (int j = 0; j < 4; j++){
-                if(btns[i][j].imageCopy() == buttons[i][j].imageCopy())
-                    System.out.println("c:" + c++);
+                if(compareImagesWithBitmap(btns[i][j].imageCopy(), buttons[i][j].imageCopy()))
+                    System.out.println("c.:" + c++);
             }
         }
         return c;
     }
+    
+    public void resetButtons(){
+        
+        for (int i=0; i < 4; i++){
+            for (int j=0; j < 4; j++){
+                btns[i][j] = null;
+            }
+        }
+    }
+    
+
 }

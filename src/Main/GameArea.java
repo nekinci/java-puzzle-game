@@ -63,7 +63,9 @@ public class GameArea extends JFrame implements IMediator{
         
         btnMix.addActionListener((ActionEvent e) -> {
             int result = game.mixImages();
+            System.out.println("result: "+result);
             if(result != 0){
+                game.addImages();
                 game.setVisible(true);
                 btnMix.setVisible(false);
                 lblHak.setVisible(true);
@@ -72,6 +74,7 @@ public class GameArea extends JFrame implements IMediator{
             }
             else{
                 JOptionPane.showMessageDialog(null, "Yeniden dene");
+                game.resetButtons();
             }
         });
     }
