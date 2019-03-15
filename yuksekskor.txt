@@ -23,3 +23,10 @@ User	100
 User	90
 User	90
 User	90
+User	100
+User	100
+User	100
+User	40
+User	100
+User	60
+Loser User	0

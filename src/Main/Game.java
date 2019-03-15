@@ -15,18 +15,19 @@ import javax.imageio.ImageIO;
 
 public class Game extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Game
-     */
+    ResimSec resim;
     public Game() {
         initComponents();
+         resim = new ResimSec(this);
+         resim.setVisible(true);
+
     }
     
     public void startGame(){
         BufferedImage img = null;
         ImageFragmentation imgFrag = null;
         try {
-            File f = new File("alanya4.jpg");
+            File f = new File(resim.getPath());
             img = ImageIO.read(f);
             imgFrag = new ImageFragmentation(img);
             Mediator mediator = new Mediator();
@@ -34,6 +35,7 @@ public class Game extends javax.swing.JFrame {
             GameArea area = new GameArea(game,mediator);
             
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
@@ -91,7 +93,7 @@ public class Game extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Game().setVisible(true);
+                new Game();
             }
         });
     }
